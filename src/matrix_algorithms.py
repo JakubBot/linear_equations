@@ -68,14 +68,16 @@ def solve_gauss_seidel(A: np.ndarray, b: np.ndarray, precision: float = 1e-9, ma
     current_error = np.linalg.norm(np.dot(A, x_new) - b)
     errors.append(current_error)
     
+    x = x_new
+    iterations += 1
     
     if current_error > max_error:
        does_converge = False
        break
      
-    x = x_new
-    iterations += 1
+
     
     elapsed_time = time.time() - start_time
     
-  return OutputSolution(x, iterations,errors, does_converge,elapsed_time)
+  # errors[1:] to remove the first error which is always Inf
+  return OutputSolution(x, iterations,errors[1:], does_converge,elapsed_time)
