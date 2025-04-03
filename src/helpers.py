@@ -1,5 +1,6 @@
 import numpy as np
-
+import matplotlib.pyplot as plt
+from app_types import Config
 
 # This function creates a band matrix with the specified diagonal, upper, and lower values.
 # Returns a 2D numpy array representing the band matrix.
@@ -28,3 +29,27 @@ def create_forcing_matrix(N, value):
     forcing_matrix[i][0] = value
     
   return forcing_matrix 
+
+
+
+def create_graph(config: Config):
+  x_label = config['x_label'] or None
+  y_label = config['y_label'] or None
+  title = config['title'] or None
+  savedImageName = config['path'] or None
+  log_y_axis = config['path'] or True
+  plot = config['plot'] or []
+  
+  for i in range(len(plot)):
+    plt.plot(plot[i][0], label=plot[i][1])
+
+  if log_y_axis:  
+    plt.yscale('log')
+  
+  plt.xlabel(x_label)
+  plt.ylabel(y_label)
+  plt.title(title)
+  plt.grid()
+  plt.legend()
+  plt.savefig(savedImageName)
+  plt.show()
