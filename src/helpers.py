@@ -45,6 +45,7 @@ def create_graph(config: Config):
   if has_x_axis:
      for i in range(len(plot)):
        plt.plot(plot[i][0],plot[i][1], label=plot[i][2])
+       plt.xticks(plot[i][0])
   else:
     for i in range(len(plot)):
       plt.plot(plot[i][0], label=plot[i][1])

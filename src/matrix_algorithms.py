@@ -85,7 +85,7 @@ def solve_gauss_seidel(A: np.ndarray, b: np.ndarray, precision: float = 1e-9, ma
   return OutputSolution(x, iterations,errors[1:], does_converge,elapsed_time)
 
 def solve_l_u(A: np.ndarray, b: np.ndarray, precision: float = 1e-9) -> OutputSolution:
-   #algorithm https://www.cl.cam.ac.uk/teaching/1314/NumMethods/supporting/mcmaster-kiruba-ludecomp.pdf
+   # idea of an algorithm https://www.cl.cam.ac.uk/teaching/1314/NumMethods/supporting/mcmaster-kiruba-ludecomp.pdf
    start_time = time.time()
    
    l,u = l_u_decomposition(A)
@@ -94,7 +94,7 @@ def solve_l_u(A: np.ndarray, b: np.ndarray, precision: float = 1e-9) -> OutputSo
    x = np.zeros((len(A), 1), dtype=float)
    
    for i in range(len(A)):
-     d[i][0] = b[i][0] - sum(l[i][j] * b[j][0] for j in range(i))
+     d[i][0] = b[i][0] - sum(l[i][j] * d[j][0] for j in range(i))
      
    for i in range(len(A)-1, -1, -1):
       x[i][0] = (d[i][0] - sum(u[i][j] * x[j][0] for j in range(i+1, len(A)))) / u[i][i]
