@@ -38,11 +38,16 @@ def create_graph(config: Config):
   title = config.get('title', None)
   savedImageName = config.get('path', 'plot.png')  # Domyślny plik, jeśli brak w config
   log_y_axis = config.get('log_y_axis', True)  # Domyślnie False
+  has_x_axis = config.get('has_x_axis', False)  # Domyślnie False
   plot = config.get('plot', [])
   axhline = config.get('axhline', [])
   
-  for i in range(len(plot)):
-    plt.plot(plot[i][0], label=plot[i][1])
+  if has_x_axis:
+     for i in range(len(plot)):
+       plt.plot(plot[i][0],plot[i][1], label=plot[i][2])
+  else:
+    for i in range(len(plot)):
+      plt.plot(plot[i][0], label=plot[i][1])
 
   if log_y_axis:  
     plt.yscale('log')
@@ -58,3 +63,25 @@ def create_graph(config: Config):
   plt.grid()
   plt.savefig(savedImageName)
   plt.show()
+  
+def l_u_decomposition(A):
+  # algorithm https://www.geeksforgeeks.org/doolittle-algorithm-lu-decomposition/
+  n = len(A)
+
+  U = np.zeros((n, n), dtype=float)
+  L = np.zeros((n, n), dtype=float)
+
+  for i in range(n):
+  
+    # creating upper triangular
+    for k in range(i,n):
+      U[i][k] = A[i][k] - sum(L[i][j] * U[j][k] for j in range(i))
+      
+    # creating lower triangular
+    for k in range(i,n):
+      if i == k:
+        L[i][i] = 1
+      else:
+        L[k][i] = (A[k][i] - sum(L[k][j] * U[j][i] for j in range(i))) / U[i][i]
+        
+  return L, U

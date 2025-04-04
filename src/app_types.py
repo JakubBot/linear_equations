@@ -6,5 +6,6 @@ class Config(TypedDict):
     title: str
     path: str
     log_y_axis: bool
+    has_x_axis: bool
     plot: any
     axhline: any
