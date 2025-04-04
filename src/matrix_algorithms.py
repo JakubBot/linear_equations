@@ -21,7 +21,7 @@ def solve_jacobi(A: np.ndarray, b: np.ndarray, precision: float = 1e-9, max_erro
   
   x = np.ones((len(A), 1), dtype=float)
   
-  while does_converge and errors[-1] > precision:
+  while errors[-1] > precision:
     new_x = np.copy(x)
     
     # A = L + U + D, L is lower triangular, U is upper triangular, D is diagonal
@@ -54,7 +54,7 @@ def solve_gauss_seidel(A: np.ndarray, b: np.ndarray, precision: float = 1e-9, ma
   
   x = np.ones((len(A), 1), dtype=float)
   
-  while does_converge and errors[-1] > precision:
+  while errors[-1] > precision:
     
     x_new = np.copy(x)
     for i in range(len(A)):

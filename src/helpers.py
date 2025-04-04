@@ -33,12 +33,13 @@ def create_forcing_matrix(N, value):
 
 
 def create_graph(config: Config):
-  x_label = config['x_label'] or None
-  y_label = config['y_label'] or None
-  title = config['title'] or None
-  savedImageName = config['path'] or None
-  log_y_axis = config['path'] or True
-  plot = config['plot'] or []
+  x_label = config.get('x_label', None)
+  y_label = config.get('y_label', None)
+  title = config.get('title', None)
+  savedImageName = config.get('path', 'plot.png')  # Domyślny plik, jeśli brak w config
+  log_y_axis = config.get('log_y_axis', True)  # Domyślnie False
+  plot = config.get('plot', [])
+  axhline = config.get('axhline', [])
   
   for i in range(len(plot)):
     plt.plot(plot[i][0], label=plot[i][1])
@@ -49,7 +50,11 @@ def create_graph(config: Config):
   plt.xlabel(x_label)
   plt.ylabel(y_label)
   plt.title(title)
-  plt.grid()
+  if axhline:
+    for y, label in axhline:
+      plt.axhline(y=y, linestyle='--', color='red', label=label)
+
   plt.legend()
+  plt.grid()
   plt.savefig(savedImageName)
   plt.show()
