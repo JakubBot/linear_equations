@@ -9,3 +9,4 @@ class Config(TypedDict):
     has_x_axis: bool
     plot: any
     axhline: any
+    figsize: tuple[float, float]

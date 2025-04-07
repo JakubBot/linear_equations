@@ -41,6 +41,10 @@ def create_graph(config: Config):
   has_x_axis = config.get('has_x_axis', False)  # Domyślnie False
   plot = config.get('plot', [])
   axhline = config.get('axhline', [])
+  fig_size = config.get('figsize', None)
+  
+  if fig_size:
+    plt.figure(figsize=fig_size)
   
   if has_x_axis:
      for i in range(len(plot)):
@@ -52,6 +56,7 @@ def create_graph(config: Config):
 
   if log_y_axis:  
     plt.yscale('log')
+
   
   plt.xlabel(x_label)
   plt.ylabel(y_label)
