@@ -8,7 +8,7 @@ and discussed comparatively.
 
 **The report** can be found here - [Linear Equations Documentation](https://github.com/JakubBot/linear_equations/blob/master/docs/Linear%20Equations.pdf)
 
-index: 197839 
+Index: 197839 
 
 ### Task A
 
