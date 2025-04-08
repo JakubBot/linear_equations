@@ -4,7 +4,7 @@ from app_types import Config
 
 # This function creates a band matrix with the specified diagonal, upper, and lower values.
 # Returns a 2D numpy array representing the band matrix.
-def create_band_matrix(diagonal, second, third, N):
+def create_band_matrix(diagonal: int, second: int, third: int, N: int) -> np.ndarray:
   band_matrix = np.zeros((N, N), dtype=int)
 
   for i in range(0, N):
@@ -21,7 +21,7 @@ def create_band_matrix(diagonal, second, third, N):
 
 # This function creates a forcing matrix with the specified value, value equals sin(n-th element * (third_index_num  + 1)).
 # Returns a 2D numpy array representing the forcing matrix.      
-def create_forcing_matrix(N, value):
+def create_forcing_matrix(N: int, value: int) -> np.ndarray:
   forcing_matrix = np.zeros((N,1), dtype=float)
   
   for i in range(0, N):
@@ -70,7 +70,7 @@ def create_graph(config: Config):
   plt.savefig(savedImageName)
   plt.show()
   
-def l_u_decomposition(A):
+def l_u_decomposition(A: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
   # algorithm https://www.geeksforgeeks.org/doolittle-algorithm-lu-decomposition/
   n = len(A)
 
