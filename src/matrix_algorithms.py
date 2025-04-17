@@ -43,8 +43,7 @@ def solve_jacobi_optimized(
     while errors[-1] > precision:
         x_new = (b.ravel() - R @ x) * D_inv
 
-        resid = A @ x_new - b.ravel()
-        err = np.linalg.norm(resid)
+        err = np.linalg.norm(A @ x_new - b.ravel())
         errors.append(err)
 
         if err > max_error:
