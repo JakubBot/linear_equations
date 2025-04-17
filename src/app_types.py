@@ -1,5 +1,6 @@
 from typing import TypedDict
 
+
 class Config(TypedDict):
     x_label: str
     y_label: str
