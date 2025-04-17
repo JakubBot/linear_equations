@@ -13,38 +13,56 @@ class OutputSolution:
       self.time = time
       
   
+def solve_jacobi(
+    A: np.ndarray,
+    b: np.ndarray,
+    precision: float = 1e-9,
+    max_iter: int = 10000,
+    max_error: float = 1e9,
+) -> OutputSolution:
+   # algorithm source https://www.quantstart.com/articles/Jacobi-Method-in-Python-and-NumPy/
+    """
+    x_{k+1} = D^{-1} (b - R x_k),
+    where D = diag(A), R = A - D.
+    """
+    start_time = time.time()
 
-def solve_jacobi(A: np.ndarray, b: np.ndarray, precision: float = 1e-9, max_error: float = 1e9) -> OutputSolution:
-  # algorithm source https://en.wikipedia.org/wiki/Jacobi_method
-  start_time = time.time()
-  
-  errors = [float('Inf')]
-  iterations = 0
-  does_converge = True
-  
-  x = np.ones((len(A), 1), dtype=float)
-  
-  while errors[-1] > precision:
-    new_x = np.copy(x)
-    
-    # A = L + U + D, L is lower triangular, U is upper triangular, D is diagonal
-    for i in range(len(A)):
-      sum_L_U = sum(A[i][j] * x[j][0] for j in range(len(A)) if i != j) # K = (L + U) * x
-      new_x[i][0] = (b[i][0] - sum_L_U) / A[i][i] # (b - K) / D
+    D = np.diag(A) # Getting the diagonal of A
+    if np.any(D == 0):
+        raise ZeroDivisionError("Matrix A has 0 on diagonal!")
       
-    
-    current_error = np.linalg.norm(np.dot(A, new_x) - b)
-    errors.append(current_error)
-    
-    if current_error > max_error:
-       does_converge = False
-       break
-     
-    x = new_x
-    iterations += 1
-    
-  elapsed_time = time.time() - start_time
-  return OutputSolution(x, iterations,errors, does_converge,elapsed_time)
+    D_inv = 1.0 / D                            # Create D^{-1}
+
+    # R is the rest of the matrix, without the diagonal 
+    R = A - np.diagflat(D)                     # R = A - D
+
+    x = np.zeros_like(b).ravel()               # shape (n,)
+    errors: list[float] = []
+    does_converge = True
+
+    for k in range(1, max_iter + 1):
+        x_new = D_inv * (b.ravel() - R @ x)
+
+        resid = A @ x_new - b.ravel()
+        err = np.linalg.norm(resid)
+        errors.append(err)
+
+        if err < precision:
+            x = x_new
+            break
+        if err > max_error:
+            does_converge = False
+            x = x_new
+            break
+
+        x = x_new
+
+    elapsed_time = time.time() - start_time
+    return OutputSolution(x=x.reshape(-1,1),
+                          iterations=k,
+                          errors=errors,
+                          does_converge=does_converge,
+                          time=elapsed_time)
 
 def solve_gauss_seidel(A: np.ndarray, b: np.ndarray, precision: float = 1e-9, max_error: float = 1e9) -> OutputSolution:
   # algorithm source https://en.wikipedia.org/wiki/Gauss%E2%80%93Seidel_method
