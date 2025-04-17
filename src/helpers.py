@@ -54,7 +54,12 @@ def create_graph(config: Config):
             plt.xticks(plot[i][0])
     else:
         for i in range(len(plot)):
-            plt.plot(plot[i][0], label=plot[i][1])
+            x = np.arange(1, len(plot[i][0]) + 1)
+            plt.plot(x, plot[i][0], label=plot[i][1])
+
+        max_y = max([len(plot[i][0]) for i in range(len(plot))])
+        step = max_y // 6 # calculating xticks for x axis (should be 6 + 1(first) ticks)
+        plt.xticks(np.arange(1, max_y + 1, step=step))
 
     if log_y_axis:
         plt.yscale("log")
