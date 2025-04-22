@@ -114,10 +114,5 @@ def l_u_decomposition_optimized(A: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
         # creating lower triangular
         if i + 1 < n:
             L[i + 1 :, i] = (A[i + 1 :, i] - L[i + 1 :, :i] @ U[:i, i]) / U[i, i]
-        # for k in range(i,n):
-        #   if i == k:
-        #     L[i][i] = 1
-        #   else:
-        #     L[k][i] = (A[k][i] - sum(L[k][j] * U[j][i] for j in range(i))) / U[i][i]
 
     return L, U
