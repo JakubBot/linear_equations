@@ -43,15 +43,16 @@ def solve_jacobi_optimized(
     # R is the rest of the matrix, without the diagonal
     R = A - np.diagflat(D)  # R = A - D
 
+    b_vec = b.ravel()  # shape (n,)
     x = np.zeros_like(b, dtype=float).ravel()  # shape (n,)
     errors: list[float] = [float("Inf")]  # list of errors
     iterations = 0
     does_converge = True
 
     while errors[-1] > precision:
-        x_new = (b.ravel() - R @ x) * D_inv
+        x_new = (b_vec - R @ x) * D_inv
 
-        err = np.linalg.norm(A @ x_new - b.ravel())
+        err = np.linalg.norm(A @ x_new - b_vec)
         errors.append(err)
 
         if err > max_error:
